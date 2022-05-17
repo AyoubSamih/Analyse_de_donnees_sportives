@@ -1,0 +1,23 @@
+
+```{r}
+library(rjson)
+```
+```{r}
+eventEng <- fromJSON(file ="/Users/lahlo/Documents/ProjetFoot4A/Soccer 2017-2018/events/events_England.json")
+
+```
+
+```{r}
+matchEng <- fromJSON(file ="/Users/lahlo/Documents/ProjetFoot4A/Soccer 2017-2018/matches/matches_England.json")
+```
+
+```{r}
+matchEngcsv <- read.csv("/Users/lahlo/Documents/ProjetFoot4A/Soccer 2017-2018/matches/matches_England.csv")
+matchEngcsv <- as.data.frame(matchEngcsv)
+
+```
+
+```{r}
+matchFR <- fromJSON(file ="/Users/lahlo/Documents/ProjetFoot4A/Soccer 2017-2018/matches/matches_France.json")
+```
+

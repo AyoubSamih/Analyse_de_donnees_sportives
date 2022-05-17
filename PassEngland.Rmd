@@ -1,0 +1,50 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+tablepassEng <- data.frame(eventName = eventEngmodif$eventName,
+                        teamId = eventEngmodif$teamId,
+                        values = 1)
+```
+
+```{r}
+tablepassEng <- tablepassEng %>%
+  group_by(eventName,teamId) %>%
+  summarise(gr_sum = sum(values))
+```
+
+```{r}
+tablepassEng$gr_mean <- tablepassEng$gr_sum/38
+```
+
+```{r}
+tablepassmeanEng <- tablepassEng[141:160,]
+tablepassmeanEng <- tablepassmeanEng
+```
+
+```{r}
+datateamsEng <- rbind(datateams[22:40,],datateams[116,])
+datateamsEng <- datateamsEng[,c("teamId","name")]
+```
+
+```{r}
+tableEng <- full_join(tablepassmeanEng,datateamsEng)
+```
+
+```{r}
+ggplot(tableEng,
+       aes(tableEng$name,tableEng$gr_mean))+
+  geom_point()+
+  geom_label_repel(aes(label = tableEng$name),
+                  box.padding   = 0.35, 
+                  point.padding = 0.5,
+                  segment.color = 'grey50') +
+  theme_classic()
+```
+

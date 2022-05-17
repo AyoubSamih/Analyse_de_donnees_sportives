@@ -1,0 +1,62 @@
+tabdensity <- c(0.8376068,0.7505376, 0.7156085, 0.707672, 0.6514778, 0.7183333, 0.727957, 0.8276923, 0.826087, 0.7516667, 0.7579365, 0.6997354, 0.691954, 0.7861538)
+tabtransitivity <- c(0.9209098, 0.8582457, 0.8619385, 0.8712329, 0.8511182, 0.8850471, 0.8550658, 0.9192187, 0.9303567, 0.9264706, 0.9097345, 0.8904541, 0.8557467, 0.8739155)
+tabdiameter <- c(2, 2, 3 , 3, 3, 2, 2, 2, 2, 3, 2, 3, 3,2)
+team <- c("ManchesterUni" ,  "Everton", "Leicester", "NewCastle", "CrystalPLace", "Burnley", "Arsenal", "ManchesterCity", "Bournemouth", "Tottenham", "Liverpool", "WestHam", "Watford", "Huddersfield")
+moyenne <- c(43.56, 45.03, 38.64, 38.21, 36.48, 34.48, 43.67, 41.38, 36.35, 36.08, 40.93, 37.79, 40.13, 39.31)
+classement <- c(2, 8, 9, 10, 11, 7, 6 ,1, 12, 3, 4, 13, 14, 16)
+nbpoints <- c(81, 49, 47, 44, 44, 54, 63, 100, 44, 77, 75, 42, 41, 37)
+medianedegree <- c(47,48,40.5,43,43,38,49,45,39,41,45.5,43,43,44)
+ecartypedegree <- c(9.74021534,12.1641108,12.2359951,12.2907889,13.9607119,11.5834652,13.3800526,10.2140175,9.14831676,11.9788703,12.5016401,13.5901848,12.7461511,10.4986446)
+medianebetw <- c(2.8850686,6.33587355,6.59316324,5.12138874,10.6634969,3.6873436,5.5888908,3.0279866,2.97071976,2.3786667,3.467246,3.19130104,5.235731,4.79082743)
+ecartypebetw <- c(3.93337258,6.72114391,7.64623043,9.85765421,9.57036751,13.3933794,7.17999341,4.01277737,4.08284051,10.6030506,8.00359361,12.6031188,9.00047482,4.88717274)
+
+indicateurs <- cbind(team, classement, tabdensity, moyenne, tabtransitivity, tabdiameter, nbpoints, medianedegree, ecartypedegree, medianebetw, ecartypebetw)
+indicateurs <- as.data.frame(indicateurs)
+summary(indicateurs)
+
+
+indicateurs$betweeness[1] <- 4.192854222 
+indicateurs$betweeness[2] <- 7.733333337
+indicateurs$betweeness[3] <- 7.911111113
+indicateurs$betweeness[4] <- 8.444444445
+indicateurs$betweeness[5] <- 9.892857143
+indicateurs$betweeness[6] <- 6.653011196
+indicateurs$betweeness[7] <- 8.133333147
+indicateurs$betweeness[8] <- 4.193384112
+indicateurs$betweeness[9] <- 4.027272728
+indicateurs$betweeness[10] <- 6.499999988
+indicateurs$betweeness[11] <- 5.814703704
+indicateurs$betweeness[12] <- 8.851851851
+indicateurs$betweeness[13] <- 8.896564624
+indicateurs$betweeness[14] <- 5.516034367
+#indicateurs <- select(indicateurs,(1),(2),(7),(3),(4),(5),(6),(8))
+indicateurs1 <- indicateurs[,3:12]
+#reg.mult <- lm(nbpoints~.,indicateurs1)
+indicateurs1$moyenne <- as.numeric(indicateurs1$moyenne)
+indicateurs1$nbpoints <- as.numeric(indicateurs1$nbpoints)
+indicateurs1$tabdensity <- as.numeric(indicateurs1$tabdensity)
+indicateurs1$tabtransitivity <- as.numeric(indicateurs1$tabtransitivity)
+indicateurs1$tabdiameter <- as.numeric(indicateurs1$tabdiameter)
+indicateurs1$medianedegree <- as.numeric(indicateurs1$medianedegree)
+indicateurs1$ecartypedegree <- as.numeric(indicateurs1$ecartypedegree)
+indicateurs1$medianebetw <- as.numeric(indicateurs1$medianebetw)
+indicateurs1$ecartypebetw <- as.numeric(indicateurs1$ecartypebetw)
+
+reg.mult <- lm(nbpoints~.,indicateurs1)
+
+summary(reg.mult)
+
+plot(reg.mult,which=c(1,2),label.size=2)  
+
+
+library(leaps)
+
+select<-regsubsets(nbpoints~., data=indicateurs1, nvmax=10, method="forward")
+plot(select,scale="bic")
+
+library(MASS)
+
+select_aic=stepAIC(lm(nbpoints~.,data=indicateurs1), trace=TRUE)
+
+summary(select_aic)
+

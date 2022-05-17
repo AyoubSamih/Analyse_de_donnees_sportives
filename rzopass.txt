@@ -1,0 +1,39 @@
+```{r}
+eventEng1 <- eventEng %>%
+  group_by(matchId)
+
+```
+
+```{r}
+eventEng1 <- eventEng1[1:1768,]
+
+eventEng1 <- eventEng1[1:901,]
+```
+
+```{r}
+for (i in 1:nrow(eventEng1)) {
+  #print(i)
+  #print(eventEng1$tags[i])
+  #print(eventEng1$tags[i][[1]]$id)
+  #print(eventEng1$tags[i][[1]])
+  if (nrow(eventEng1$tags[i][[1]])==0) {
+    eventEng1$tags[i] <- 0
+  }
+  else {
+    eventEng1$tags[i] <- eventEng1$tags[i][[1]]$id[nrow(eventEng1$tags[i][[1]])]
+  }
+}
+```
+
+```{r}
+tab <-  data.frame(eventId = 1,subEventName=1,tags=1,playerId=1,positions=1,matchId=1,eventName=1,teamId=1,matchPeriod=1,
+                   eventSec=1,subEventId=1,id=1)
+
+for(i in 1:nrow(eventEng1)){
+  if (eventEng1$eventName[i] == "Pass"){
+    tab <- rbind(tab,eventEng1[i,],eventEng1[i+1,])
+  } 
+}
+tab <- tab[-1,]
+```
+

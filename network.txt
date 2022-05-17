@@ -1,0 +1,29 @@
+```{r}
+matchFrmodif$test <- str_split(matchFrmodif$label,",",simplify=TRUE)
+matchFrmodifSE <- rbind(matchFrmodif[1:7,],matchFrmodif[9:14,],matchFrmodif[16:28,],matchFrmodif[30:39,],matchFrmodif[41:42,],matchFrmodif[44:57,],matchFrmodif[59:69,],matchFrmodif[71:74,],matchFrmodif[76:80,],matchFrmodif[82:97,],matchFrmodif[99:106,],matchFrmodif[108:111,],matchFrmodif[113:125,],matchFrmodif[127:140,],matchFrmodif[142:144,],matchFrmodif[146:156,],matchFrmodif[158:162,],matchFrmodif[164:175,],matchFrmodif[177:182,],matchFrmodif[184:196,],matchFrmodif[198:209,],matchFrmodif[212:222,],matchFrmodif[224:237,],matchFrmodif[239:249,],matchFrmodif[251:260,],matchFrmodif[263:272,],matchFrmodif[274:290,],matchFrmodif[292:297,],matchFrmodif[299:303,],matchFrmodif[305:312,],matchFrmodif[314:324,],matchFrmodif[326:332,],matchFrmodif[334:349,],matchFrmodif[351:356,],matchFrmodif[358:365,],matchFrmodif[367:376,])
+```
+
+
+```{r}
+matchFrmodifSE$test <- str_split(matchFrmodifSE$label,",",simplify=TRUE)
+matchFrmodifSE$test <- as.data.frame(matchFrmodifSE$test)
+colnames(matchFrmodifSE$test) <- c("v1","v2")
+matchFrmodifSE$test$v1 <- str_split(matchFrmodifSE$test$v1,"-",simplify = TRUE)
+matchFrmodifSE$test$v2 <- str_split(matchFrmodifSE$test$v2,"-",simplify = TRUE)
+matchFrmodifSE$test$v1 <- as.data.frame(matchFrmodifSE$test$v1)
+matchFrmodifSE$test$v2 <- as.data.frame(matchFrmodifSE$test$v2)
+colnames(matchFrmodifSE$test$v1) <- c("v11","v12")
+colnames(matchFrmodifSE$test$v2) <- c("v21","v22")
+```
+
+```{r}
+rzo <- data.frame(team1 = matchFrmodifSE$test$v1$v11,
+                  team2 = matchFrmodifSE$test$v1$v12,
+                  scoreteam1 = matchFrmodifSE$test$v2$v21,
+                  scoreteam2 = matchFrmodifSE$test$v2$v22)
+```
+
+```{r}
+rzonet <- graph_from_data_frame(rzo[,1:3],vertices = datateamsFrSE,directed = FALSE)
+```
+

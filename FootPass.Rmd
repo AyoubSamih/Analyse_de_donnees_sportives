@@ -1,0 +1,88 @@
+```{r}
+library(jsonlite)
+matchEng <- fromJSON("/home/kenfaoui/Bureau/SportData4A/matches_England.json",flatten=FALSE)
+colnames(matchEng)
+class(matchEng)
+matchEngt <- matchEng[,c("teamsData")]
+class(matchEngt)
+colnames(matchEng)
+colnames(matchEngt)
+matchEngmodif <- matchEng[,c("winner","wyId","label","date")]
+eventEng <- fromJSON("/home/kenfaoui/Bureau/SportData4A/events_England.json",flatten=FALSE)
+colnames(eventEng)
+eventEngmodif <- eventEng[,c("matchId","eventName","teamId")]
+colnames(eventEngmodif)
+head(eventEngmodif)
+eventEngmodif[1]
+nrow(eventEngmodif)
+eventEngmodif$teamId[3]
+```
+
+```{r}
+teams <- fromJSON("/home/kenfaoui/Bureau/SportData4A/teams.json",flatten=FALSE)
+dataframepass <- data.frame(matrix(NA,ncol=2,nrow =20))
+
+```
+
+```{r}
+
+```
+
+```{r}
+compteur <- 0
+i <- 0
+for (i in 1:nrow(eventEngmodif)) {
+  if ((eventEngmodif$teamId[i]=="1609") & (eventEngmodif$eventName[i]=="Pass")){
+    compteur <- compteur + 1
+  }
+}
+
+print(compteur)
+```
+
+```{r}
+i <- 1
+for (j in 1:nrow(teams)) {
+  if(teams$area$name[j]=="England"){
+    dataframepass[i,1] <- teams$wyId[j]
+    i <- i + 1 
+  }
+}
+dataframepass
+```
+
+```{r}
+c <- 0
+i <- 0
+j <- 0
+dataframepass[2]<-0
+for (j in 1:nrow(dataframepass)) {
+  for (i in 1:nrow(eventEngmodif)) {
+    if (eventEngmodif$teamId[i]==dataframepass[j,1]) {
+      if (eventEngmodif$eventName[i]=="Pass") {
+        c <- c + 1 
+        dataframepass[j,2] <- c 
+        
+      }
+    }
+  }  
+}
+dataframepass
+```
+
+```{r}
+library(ggplot2)
+ggplot(dataframepass) +
+     geom_point(aes(x = dataframepass[1], y= dataframepass[2]))
+
+```
+
+
+```{r}
+library(ggplot2)
+ggplot(dataframepass, aes(dataframepass[1],dataframepass[2]))
+```
+
+
+
+
